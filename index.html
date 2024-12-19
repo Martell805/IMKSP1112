@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .forms-container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    #xmlForm, #dataForm {
+      width: 100%;
+      padding: 32px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 24px;
+    }
+
+    label p {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+      color: #495057;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #3498db;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(45deg, #3498db, #2980b9);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .response {
+      display: none;
+      width: 100%;
+      margin: 20px 0;
+      padding: 24px;
+      background: #f8f9fa;
+      border-radius: 16px;
+      border-left: 4px solid #3498db;
+      color: #2c3e50;
+    }
+
+    .response.active {
+      display: block;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .data-container {
+      position: sticky;
+      top: 40px;
+    }
+
+    #data {
+      width: 100%;
+      min-height: 400px;
+      padding: 24px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    #data p {
+      padding: 12px;
+      border-bottom: 1px solid #e9ecef;
+      color: #495057;
+      font-size: 15px;
+    }
+
+    #data p:last-child {
+      border-bottom: none;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Адаптивность для мобильных устройств */
+    @media (max-width: 1024px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      body {
+        padding: 20px;
+      }
+
+      .data-container {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="forms-container">
+    <form id="xmlForm">
+      <label for="scenarioNumber">
+        <p>Сценарий</p>
+        <input
+                type="number"
+                id="scenarioNumber"
+                name="scenarioNumber"
+                required
+        />
+      </label>
+
+      <label for="drillingRate">
+        <p>Скорость бурения</p>
+        <input
+                type="number"
+                step="0.1"
+                id="drillingRate"
+                name="drillingRate"
+                required
+        />
+      </label>
+
+      <label for="oilPrice">
+        <p>Цена масла</p>
+        <input
+                type="number"
+                step="0.1"
+                id="oilPrice"
+                name="oilPrice"
+                required
+        />
+      </label>
+
+      <label for="exchangeRate">
+        <p>Курс доллара</p>
+        <input
+                type="number"
+                step="0.1"
+                id="exchangeRate"
+                name="exchangeRate"
+                required
+        />
+      </label>
+
+      <button type="button" onclick="sendXmlRequest()">Отправить</button>
+    </form>
+
+    <form id="dataForm">
+      <label for="scNumber">
+        <p>Сценарий</p>
+        <input
+                type="number"
+                id="scNumber"
+                name="scNumber"
+                required
+        />
+      </label>
+
+      <button type="button" onclick="printData()">Вывести данные</button>
+    </form>
+
+    <div class="response" id="response"></div>
+  </div>
+
+  <div class="data-container">
+    <div id="data"></div>
+  </div>
+</div>
+
+<script>
+  async function sendXmlRequest() {
+    const scenarioNumber = document.getElementById("scenarioNumber").value;
+    const drillingRate = document.getElementById("drillingRate").value;
+    const oilPrice = document.getElementById("oilPrice").value;
+    const exchangeRate = document.getElementById("exchangeRate").value;
+
+    const xmlData = `
+            <ModelRequest>
+                <scenarioNumber>${scenarioNumber}</scenarioNumber>
+                <drillingRate>${drillingRate}</drillingRate>
+                <oilPrice>${oilPrice}</oilPrice>
+                <exchangeRate>${exchangeRate}</exchangeRate>
+            </ModelRequest>
+        `;
+
+    try {
+      const response = await axios.post("http://localhost:8080", xmlData, {
+        headers: {
+          "Content-Type": "application/xml",
+        },
+      });
+
+      document.getElementById("response").classList.add("active");
+      document.getElementById("response").innerHTML = `<strong>Response:</strong><pre>${response.data}</pre>`;
+    } catch (error) {
+      document.getElementById("response").classList.add("active");
+      document.getElementById("response").innerHTML = `<strong>Error:</strong> ${error.response?.status || ""} ${error.message}`;
+    }
+  }
+
+  async function printData() {
+    const scenarioNumber = document.getElementById("scNumber").value;
+
+    const xmlData = `
+          <DataRequest>
+              <scenarioNumber>${scenarioNumber}</scenarioNumber>
+          </DataRequest>
+        `;
+
+    const response = await axios.post("http://localhost:8080/data", xmlData, {
+      headers: {
+        "Content-Type": "application/xml",
+      },
+    });
+
+    document.getElementById("data").innerHTML = "";
+
+    response.data.forEach((element) => {
+      document.getElementById("data").innerHTML += `<p>${element.year} ${element.profit}</p>`;
+    });
+  }
+</script>
+</body>
+</html>

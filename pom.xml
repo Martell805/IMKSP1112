@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.5</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>org.example</groupId>
+    <artifactId>AnyLogicSpringBoot</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>AnyLogicSpringBoot</name>
+    <description>AnyLogicSpringBoot</description>
+    <url/>
+    <licenses>
+        <license/>
+    </licenses>
+    <developers>
+        <developer/>
+    </developers>
+    <scm>
+        <connection/>
+        <developerConnection/>
+        <tag/>
+        <url/>
+    </scm>
+    <properties>
+        <java.version>17</java.version>
+        <start-class>org.example.anylogicspringboot.AnyLogicSpringBootApplication</start-class>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-core -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>4.0.5</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>4.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.17.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-sql -->
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-sql</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+
+        <!-- Local jars -->
+        <dependency>
+            <groupId>model</groupId>
+            <artifactId>model</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jars/model.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.anylogic</groupId>
+            <artifactId>engine</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jars/com.anylogic.engine.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.anylogic</groupId>
+            <artifactId>engine.datautil</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jars/com.anylogic.engine.datautil.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.anylogic</groupId>
+            <artifactId>engine.editorapi</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jars/com.anylogic.engine.editorapi.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.anylogic</groupId>
+            <artifactId>engine.generalization</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jars/com.anylogic.engine.generalization.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.anylogic</groupId>
+            <artifactId>engine.sa</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jars/com.anylogic.engine.sa.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
